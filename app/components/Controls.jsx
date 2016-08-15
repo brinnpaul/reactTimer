@@ -11,19 +11,34 @@ let Controls = React.createClass({
     }
   },
   render: function() {
-    let {countdownStatus} = this.props;
+    let {countdownStatus, timer} = this.props;
     let renderStartStop = () => {
+      let button;
       if (countdownStatus==='started') {
-        return <button className="button secondary" onClick={this.onStatusChange('paused')}>Pause</button>
+        return (
+          <button className="button secondary" onClick={this.onStatusChange('paused')}>Pause</button>
+        );
       } else if (countdownStatus==='paused') {
-        return <button className="button primary" onClick={this.onStatusChange('started')}>Start</button>
+        return (
+          <button className="button primary" onClick={this.onStatusChange('started')}>Start</button>
+        );
       }
     };
-
+    let renderBeginTimer = () => {
+      if (timer && countdownStatus==="stopped") {
+        return <button className="button expanded" onClick={this.onStatusChange('started')}>Start</button>
+      }
+    };
+    let renderClearButton = () => {
+      if (countdownStatus!=="stopped") {
+        return <button className="button alert hollow" onClick={this.onStatusChange('stopped')}>Clear</button>
+      }
+    };
     return (
       <div className="controls">
+        {renderBeginTimer()}
         {renderStartStop()}
-        <button className="button alert hollow" onClick={this.onStatusChange('stopped')}>Clear</button>
+        {renderClearButton()}
       </div>
     );
   }
